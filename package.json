@@ -1,0 +1,27 @@
+{
+  "name": "kanban",
+  "version": "0.0.1",
+  "description": "Process your functions in a Kanban board. Built with the popular async tool.",
+  "author": "Matteo Collina <hello@matteocollina.com>",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcollina/kanban.git"
+  },
+  "bugs": {
+    "url": "http://github.com/mcollina/kanban/issues"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "devDependencies": {
+    "sinon-chai": "~2.3.1",
+    "chai": "~1.5.0",
+    "mocha": "~1.8.2",
+    "sinon": "~1.6.0",
+    "jshint": "~1.1.0"
+  },
+  "dependencies": {
+    "async": "~0.2.6"
+  }
+}
