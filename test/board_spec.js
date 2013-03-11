@@ -56,4 +56,54 @@ describe("kanban.Board", function () {
       done();
     });
   });
+
+  it("should execute a step with a wip 1", function (done) {
+    instance.defineStep("hello", { wip: 1 }, function (obj, callback) {
+      setTimeout(function () {
+        callback();
+      }, obj.ms);
+    });
+
+    var first = false;
+
+    instance.insert({ ms: 20 }, function () {
+      first = true;
+    }).insert({ ms: 0 }, function () {
+      expect(first).to.be.true;
+      done();
+    });
+  });
+
+  it("should forward an error even with a wip", function (done) {
+    instance.defineStep("a", { wip: 1 }, function (obj, cb) {
+      // dummy step
+      process.nextTick(cb);
+    }).defineStep("b", { wip: 1 }, function (obj, cb) {
+      if(obj.name === "world") {
+        cb(new Error("hello world"));
+      } else {
+        cb();
+      }
+    });
+
+    instance.insert({ hello: "world" }, function (err) {
+      expect(err).to.be.defined;
+    }).insert({ hello: "matteo" }, done);
+  });
+
+  it("should set all the step.current to zero", function (done) {
+    instance.defineStep("a", { wip: 1 }, function (obj, cb) {
+      // dummy step
+      process.nextTick(cb);
+    }).defineStep("b", { wip: 1 }, function (obj, cb) {
+      cb(new Error("hello world"));
+    });
+
+    instance.insert({ a: "b" }).insert({ hello: "world" }, function () {
+      instance.steps.forEach(function (s) {
+        expect(s).to.have.property("current", 0);
+      });
+      done();
+    });
+  });
 });
