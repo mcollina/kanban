@@ -22,7 +22,6 @@
     "jshint": "~1.1.0"
   },
   "dependencies": {
-    "async": "~0.2.6",
     "debug": "~0.7.2"
   }
 }
