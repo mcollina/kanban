@@ -111,4 +111,32 @@ describe("kanban.Board", function () {
       done();
     });
   });
+
+  it("should execute pass the Job instance to the step definition", function (done) {
+    instance.defineStep("hello", function (obj, job, callback) {
+      expect(job).to.be.instanceof(kanban.Job);
+      callback();
+    });
+
+    instance.insert({ hello: "world" }, done);
+  });
+
+  it("should jump to a given step", function (done) {
+    var called = false;
+
+    instance.defineStep("a", { wip: 1 }, function (obj, job, cb) {
+      job.jumpTo("c");
+      cb();
+    }).defineStep("b", { wip: 1 }, function (obj, cb) {
+      cb(new Error("hello world"));
+    }).defineStep("c").defineStep("d", function (obj, cb) {
+      called = true;
+      cb();
+    });
+
+    instance.insert({ a: "b" }, function () {
+      expect(called).to.be.true;
+      done();
+    });
+  });
 });
