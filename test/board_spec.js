@@ -27,6 +27,11 @@ describe("kanban.Board", function () {
     instance.insert({ hello: "world" }, done);
   });
 
+  it("should support dummy steps", function (done) {
+    instance.defineStep("ahha").insert({ hello: "world" }, done);
+  });
+
+
   it("should execute two steps", function (done) {
     var count = 0;
     var increase = function (obj, callback) {
