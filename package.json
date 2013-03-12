@@ -12,7 +12,7 @@
     "url": "http://github.com/mcollina/kanban/issues"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make bail"
   },
   "devDependencies": {
     "sinon-chai": "~2.3.1",
