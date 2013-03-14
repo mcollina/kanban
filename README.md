@@ -27,7 +27,7 @@ of a processing step in your app.
 npm install kanban --save
 ```
 
-### Usage
+## Usage
 
 As in kanban, there is a __Board__ and the processing of __Job__s
 happens in __Step__s.
