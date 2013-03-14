@@ -96,19 +96,18 @@ describe("kanban.Board", function () {
     }).insert({ hello: "matteo" }, done);
   });
 
-  it("should set all the step.current to zero", function (done) {
+  it("should set all the step.current to zero in case of errors", function () {
     instance.defineStep("a", { wip: 1 }, function (obj, cb) {
       // dummy step
-      process.nextTick(cb);
+      cb();
     }).defineStep("b", { wip: 1 }, function (obj, cb) {
       cb(new Error("hello world"));
     });
 
-    instance.insert({ a: "b" }).insert({ hello: "world" }, function () {
-      instance.steps.forEach(function (s) {
-        expect(s).to.have.property("current", 0);
-      });
-      done();
+    instance.insert({ a: "b" }).insert({ hello: "world" });
+
+    instance.steps.forEach(function (s) {
+      expect(s).to.have.property("current", 0);
     });
   });
 

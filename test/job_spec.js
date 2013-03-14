@@ -78,9 +78,10 @@ describe("kanban.Job", function () {
 
     it("should memorize the time between two executeNext as this step duration", function (done) {
   
-      function dummy() {}
+      function dummy(job, scheduled) { scheduled(step); }
+      var step = { name: "mystep", execute: dummy };
 
-      steps.push({ name: "mystep", execute: dummy });
+      steps.push(step);
 
       instance.executeNext();
 
@@ -93,12 +94,14 @@ describe("kanban.Job", function () {
 
     it("should memorize the time between two executeNext for the same step in an array", function (done) {
   
-      function dummy() {}
+      function dummy(job, scheduled) { scheduled(step); }
+      var step = { name: "mystep", execute: dummy };
 
-      steps.push({ name: "mystep", execute: dummy });
-      steps.push({ name: "mystep", execute: dummy });
-      steps.push({ name: "mystep", execute: dummy });
-      steps.push({ name: "mystep", execute: dummy });
+      steps.push(step);
+      steps.push(step);
+      steps.push(step);
+      steps.push(step);
+
 
       instance.executeNext();
       instance.executeNext();

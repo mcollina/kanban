@@ -35,6 +35,12 @@ describe("kanban.Step", function () {
     instance.current = instance.wip;
     expect(instance.isFull()).to.be.true;
   });
+
+  it("should never be full if it has no wip", function () {
+    instance = new kanban.Step("awesome step", func);
+    instance.current = instance.current + 1; 
+    expect(instance.isFull()).to.be.false;
+  });
   
   describe("#execute", function () {
 
@@ -101,7 +107,10 @@ describe("kanban.Step", function () {
     });
 
     it("should restore the capacity after a completion", function () {
-      job = { obj: "Matteo", executeNext: sinon.spy() };
+      job = { 
+        obj: "Matteo", 
+        executeNext: function (err, scheduled) { scheduled() ; }
+      };
       
       func = function (obj, cb) { cb(); };
 
@@ -112,7 +121,10 @@ describe("kanban.Step", function () {
     });
 
     it("should restore the capacity after a completion even in case of error", function () {
-      job = { obj: "Matteo", executeNext: sinon.spy() };
+      job = { 
+        obj: "Matteo", 
+        executeNext: function (err, scheduled) { scheduled() ; }
+      };
       
       var err = "error";
 
@@ -125,7 +137,12 @@ describe("kanban.Step", function () {
     });
 
     it("should completes all jobs", function () {
-      job = { obj: "Matteo", executeNext: sinon.spy() };
+      job = { 
+        obj: "Matteo", 
+        executeNext: function (err, scheduled) { scheduled() ; }
+      };
+
+      var spy = sinon.spy(job, "executeNext");
       
       func = function (obj, cb) { cb(); };
 
