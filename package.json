@@ -1,7 +1,7 @@
 {
   "name": "kanban",
-  "version": "0.0.1",
-  "description": "Kanban__ is a node.js control-flow library. As the Japanese methodology, it is pull-based.",
+  "version": "0.0.2",
+  "description": "Kanban is a node.js control-flow library. As the Japanese methodology, it is pull-based.",
   "author": "Matteo Collina <hello@matteocollina.com>",
   "main": "index.js",
   "repository": {
