@@ -11,6 +11,14 @@
   "bugs": {
     "url": "http://github.com/mcollina/kanban/issues"
   },
+  "keywords": [
+    "async",
+    "control flow",
+    "control",
+    "flow",
+    "kanban",
+    "pull"
+  ],
   "scripts": {
     "test": "make bail"
   },
