@@ -13,6 +13,10 @@ describe("kanban.Job", function () {
     expect(instance).to.have.property("obj", obj);
   });
 
+  it("should have some stats", function () {
+    expect(instance.stats).to.be.eql({});
+  });
+
   describe("#executeNext", function () {
     it("should call done with error if an error is passed", function (done) {
       var nastyError = new Error("this is nasty");
@@ -21,6 +25,14 @@ describe("kanban.Job", function () {
         done();
       };
       instance.executeNext(nastyError);
+    });
+
+    it("should call done with itself", function (done) {
+      instance.done = function (err, job) {
+        expect(job).to.equal(instance);
+        done();
+      };
+      instance.executeNext();
     });
 
     it("should call done if there are no more steps", function (done) {
@@ -62,6 +74,42 @@ describe("kanban.Job", function () {
       instance.executeNext();
 
       expect(steps).to.be.eql([]);
+    });
+
+    it("should memorize the time between two executeNext as this step duration", function (done) {
+  
+      function dummy() {}
+
+      steps.push({ name: "mystep", execute: dummy });
+
+      instance.executeNext();
+
+      setTimeout(function () {
+        instance.executeNext();
+        expect(instance.stats.mystep).to.be.at.least(9);
+        done();
+      }, 10);
+    });
+
+    it("should memorize the time between two executeNext for the same step in an array", function (done) {
+  
+      function dummy() {}
+
+      steps.push({ name: "mystep", execute: dummy });
+      steps.push({ name: "mystep", execute: dummy });
+      steps.push({ name: "mystep", execute: dummy });
+      steps.push({ name: "mystep", execute: dummy });
+
+      instance.executeNext();
+      instance.executeNext();
+
+      setTimeout(function () {
+        instance.executeNext();
+        instance.executeNext();
+        expect(instance.stats.mystep[0]).to.be.at.least(0);
+        expect(instance.stats.mystep[1]).to.be.at.least(9);
+        done();
+      }, 10);
     });
   });
 
