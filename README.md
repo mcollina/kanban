@@ -113,6 +113,24 @@ instance.insert({ a: "b" }, function (err) {
 });
 ```
 
+### Timeouts
+
+It is possible to specify a timeout for a given step, in milliseconds.
+
+If a timeout happens, the job is removed from the board
+and the function you inserted with the job is called.
+
+```
+// define a timeout of a minute
+instance.defineStep("a", { timeout: 60 * 1000 }, function (obj, job, cb) {
+  // this function is stuck somewhere, it will not complete
+});
+
+instance.insert({ a: "b" }, function (err) {
+  console.log(err)
+});
+```
+
 ## Contributing to Kanban
 
 * Check out the latest master to make sure the feature hasn't been

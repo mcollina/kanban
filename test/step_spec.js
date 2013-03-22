@@ -106,6 +106,40 @@ describe("kanban.Step", function () {
       expect(job.executeNext).to.be.calledWith(err);
     });
 
+    it("should call obj.executeNext with an error if the step times out", function (done) {
+      job = { 
+        obj: "Matteo", 
+        executeNext: function (err) {
+          expect(err).to.be.instanceof(Error);
+          done();
+        }
+      };
+      var err = "error";
+      
+      func = function (obj, cb) { 
+        // we do nothing here, we are stuck somewhere
+      };
+
+      instance = new kanban.Step("awesome step", { wip: 2, timeout: 10 }, func);
+      instance.execute(job);
+    });
+
+    it("should work correctly if no timeout occurs", function (done) {
+      job = { 
+        obj: "Matteo", 
+        executeNext: function (err) {
+          done(err);
+        }
+      };
+
+      func = function (obj, cb) { 
+        cb();
+      };
+
+      instance = new kanban.Step("awesome step", { wip: 2, timeout: 10 }, func);
+      instance.execute(job);
+    });
+
     it("should restore the capacity after a completion", function () {
       job = { 
         obj: "Matteo", 
